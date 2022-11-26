@@ -7,14 +7,14 @@ let isAttendanceWorking = false;
 let buttonClickInd = 0;
 let startTime;
 
-
-function start() {
+async function start() {
   startTime = new Date();
   startAttendanceTracker = setInterval(attendanceTracker, 1000);
 }
 
 // to get the meeting name/title
 const getMeetingName = () => {
+  console.log("GET_MEETING_NAME wala functions is working.....");
   const elm = document.querySelector("[data-meeting-title]");
   if (elm && elm.dataset.meetingTitle) {
     return elm.dataset.meetingTitle;
@@ -23,6 +23,7 @@ const getMeetingName = () => {
 };
 
 let stop = (STOP = () => {
+  console.log("STOP wala functions is working.....");
   clearInterval(startAttendanceTracker);
   let meetingCode = window.location.pathname.substring(1);
   let date = new Date();
@@ -48,7 +49,7 @@ let stop = (STOP = () => {
     attendee_names: JSON.stringify(sortedtstudentsNameSet),
     attendedDurationInSec: JSON.stringify(studentsAttendedDuration),
     meet_code: meetingCode,
-    meeting_title: getMeetingName().replace('Meet - ', ''),
+    meeting_title: getMeetingName().replace("Meet - ", ""),
     meeting_time: startTime,
   };
 
@@ -56,6 +57,7 @@ let stop = (STOP = () => {
 
   setTimeout(() => {
     const api = "http://localhost:5000/attendance"; // endpoint where this data will go
+
     fetch(api, {
       method: "POST",
       headers: {
@@ -85,8 +87,8 @@ function attendanceTracker() {
       );
       numberOfjoinedStudents =
         Number.isInteger(numberOfjoinedStudents) &&
-          numberOfjoinedStudents > 0 &&
-          numberOfjoinedStudents != -1
+        numberOfjoinedStudents > 0 &&
+        numberOfjoinedStudents != -1
           ? numberOfjoinedStudents
           : currentlyPresentStudents.length;
     } catch (e) {
@@ -97,7 +99,7 @@ function attendanceTracker() {
         studentsNameSet.add(
           currentlyPresentStudents[i].innerHTML.toUpperCase()
         );
-      } catch (exception) { }
+      } catch (exception) {}
     }
     for (studentName of studentsNameSet) {
       if (studentDetails.has(studentName)) {
@@ -164,24 +166,29 @@ newButton.style.padding = "auto auto auto auto";
 newButton.style.height = "75px";
 newButton.style.width = "250px";
 newButton.style.borderRadius = "10px";
-let tryInsertingButton = setInterval(insertButton, 1000);
+
+let flag = true;
+if (flag) {
+  let tryInsertingButton = setInterval(insertButton, 1000);
+}
 
 function insertButton() {
   try {
     ui_buttons = document.getElementsByClassName("VfPpkd-kBDsod NtU4hc");
     //ui_buttons[1].click();
     document.getElementsByClassName("lefKC")[0].appendChild(newButton);
+    if (!isAttendanceWorking) {
+      isAttendanceWorking = true;
+      newButton.innerHTML = "Click To<br>Generate Attendance Report";
+      newButton.style.backgroundColor = "#00796b";
+      StartTime = new Date().toLocaleTimeString();
+      studentDetails.clear();
+      studentsNameSet.clear();
+      totalClassDuration = 0;
+      start();
+    }
     document.getElementById("newButton").addEventListener("click", function () {
-      if (!isAttendanceWorking) {
-        isAttendanceWorking = true;
-        newButton.innerHTML = "Click To<br>Generate Attendance Report";
-        newButton.style.backgroundColor = "#00796b";
-        StartTime = new Date().toLocaleTimeString();
-        studentDetails.clear();
-        studentsNameSet.clear();
-        totalClassDuration = 0;
-        start();
-      } else if (isAttendanceWorking) {
+      if (isAttendanceWorking) {
         isAttendanceWorking = false;
         newButton.innerHTML = "Track Attendance";
         newButton.style.backgroundColor = "#C5221F";
@@ -189,7 +196,7 @@ function insertButton() {
       }
     });
     clearInterval(tryInsertingButton);
-  } catch (error) { }
+  } catch (error) {}
 }
 
 function toTimeFormat(time) {
