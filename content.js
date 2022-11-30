@@ -6,8 +6,15 @@ let goingToStop = 0;
 let isAttendanceWorking = false;
 let buttonClickInd = 0;
 let startTime;
+let flag = false;
+// let mannual = 1;
+
+// function guard() {
+//   if (flag) start()
+// }
 
 async function start() {
+  console.log("start se ho rha hai ye");
   startTime = new Date();
   startAttendanceTracker = setInterval(attendanceTracker, 1000);
 }
@@ -77,6 +84,7 @@ let stop = (STOP = () => {
 });
 
 function attendanceTracker() {
+  console.log("stt wala hai");
   let currentlyPresentStudents = document.getElementsByClassName("zWGUib");
   if (currentlyPresentStudents.length > 0) {
     studentsNameSet.clear();
@@ -118,15 +126,14 @@ function attendanceTracker() {
     if (studentsNameSet.size - 1 == -1) {
       goingToStop += 1;
     } else {
+      console.log("set interval ka else 1");
       newButton.innerHTML =
-        "Tracking Started<br>" +
-        toTimeFormat(totalClassDuration) +
-        " ago<br>" +
-        "Click To Generate Report";
+        toTimeFormat(totalClassDuration)
       totalClassDuration += 1;
       goingToStop = 0;
     }
     if (goingToStop == 2) {
+      console.log("set interval ka if 1");
       isAttendanceWorking = false;
       newButton.innerHTML = "Track Attendance";
       newButton.style.border = "2px solid #C5221F";
@@ -135,12 +142,14 @@ function attendanceTracker() {
     }
   } else {
     try {
+      console.log("set interval ka try if 1");
       ui_buttons[buttonClickInd % ui_buttons.length].click();
       buttonClickInd += 1;
       goingToStop = 0;
     } catch (error) {
       goingToStop += 1;
       if (goingToStop == 2) {
+        console.log("set interval try if 2");
         isAttendanceWorking = false;
         newButton.innerHTML = "Track Attendance";
         newButton.style.border = "2px solid #C5221F";
@@ -151,63 +160,64 @@ function attendanceTracker() {
   }
 }
 
-// Adding button to meet ui
-let newButton = document.createElement("button");
-newButton.id = "newButton";
-newButton.className = "Jyj1Td CkXZgc";
-newButton.innerHTML = "Track Attendance";
-newButton.type = "button";
-newButton.innerHTML = "Track Attendance";
-newButton.style.border = "1px solid white";
-newButton.style.backgroundColor = "#C5221F";
-newButton.style.color = "white";
-newButton.style.borderRadius = "2px";
-newButton.style.padding = "auto auto auto auto";
-newButton.style.height = "75px";
-newButton.style.width = "250px";
-newButton.style.borderRadius = "10px";
-let flag = false;
-
-async function FIND_MERAKI_URL(url) {
+async function merakiClassChecker(url) {
   console.log(url, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-  const API_URL = "http://localhost:5000/classes";
-  const token = ''
+  const API_URL = "https://dev-api.navgurukul.org/classes";
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMxNjU1IiwiZW1haWwiOiJtYWhlbmRyYTIxQG5hdmd1cnVrdWwub3JnIiwiaWF0IjoxNjY5Nzg5MjQ4LCJleHAiOjE3MDEzNDY4NDh9.skpbASGKogaOAsngnD1P1tUHx8F0wLGC6uR2YLPXK5g";
 
   const data = await fetch(API_URL, {
     method: "GET",
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
+      "version-code": 99,
     },
   });
   const parsed_data = await data.json();
+  console.log(parsed_data);
   for (let ind = 0; ind < parsed_data.length; ind++) {
-    console.log(parsed_data[ind].class.meet_link,"MEET URL..............");
-    if (parsed_data[ind].class.meet_link === url) {
+    console.log(parsed_data[ind].meet_link, "MEET URL..............");
+    if (parsed_data[ind].meet_link === url) {
       flag = true;
       break;
     }
   }
-  console.log(flag,'FLAG..................');
-  return flag
+  console.log(flag, "FLAG..................");
+  return flag;
 }
 
 let meet_url = window.location.href;
-const checked_url = FIND_MERAKI_URL(meet_url);
-checked_url.then((result)=>{
-  if(result){
+const checked_url = merakiClassChecker(meet_url);
+checked_url.then((result) => {
+  if (result) {
+    // flag = false;
     let tryInsertingButton = setInterval(insertButton, 1000);
+    console.log(result);
   }
-})
+});
+
+// Adding button to meet ui
+let newButton = document.createElement("button");
+newButton.id = "newButton";
+newButton.className = "Jyj1Td CkXZgc";
+newButton.type = "button";
+newButton.innerHTML = "Record";
+newButton.style.border = "none";
+newButton.style.backgroundColor = "#ea4335";
+newButton.style.color = "white";
+// newButton.style.padding = "auto auto auto auto";
+newButton.style.height = "2.6rem";
+newButton.style.width = "4.2rem";
+newButton.style.borderRadius = "30px";
 
 function insertButton() {
   try {
     ui_buttons = document.getElementsByClassName("VfPpkd-kBDsod NtU4hc");
-    //ui_buttons[1].click();
-    document.getElementsByClassName("lefKC")[0].appendChild(newButton);
+    // ui_buttons[1].click();
+    document.getElementsByClassName("Tmb7Fd")[0].appendChild(newButton);
     if (!isAttendanceWorking) {
       isAttendanceWorking = true;
-      newButton.innerHTML = "Click To<br>Generate Attendance Report";
       newButton.style.backgroundColor = "#00796b";
       StartTime = new Date().toLocaleTimeString();
       studentDetails.clear();
@@ -215,14 +225,25 @@ function insertButton() {
       totalClassDuration = 0;
       start();
     }
+
+    // send attendance automatically when meet end or end button clicked
     document.getElementById("newButton").addEventListener("click", function () {
       if (isAttendanceWorking) {
         isAttendanceWorking = false;
-        newButton.innerHTML = "Track Attendance";
         newButton.style.backgroundColor = "#C5221F";
         stop();
       }
     });
+    document
+      .getElementsByClassName("Gt6sbf QQrMi")
+      .addEventListener("click", function () {
+        if (isAttendanceWorking) {
+          // isAttendanceWorking = false;
+          // newButton.innerHTML = "Rec";
+          // newButton.style.backgroundColor = "#C5221F";
+          stop();
+        }
+      });
     clearInterval(tryInsertingButton);
   } catch (error) {}
 }
@@ -233,6 +254,6 @@ function toTimeFormat(time) {
   mm = Math.floor(time / 60);
   time = time - mm * 60;
   ss = time;
-  if (hh == 0) return mm + " min " + ss + "s";
-  else return hh + " hr " + mm + " min " + ss + "s";
+  if (hh == 0) return mm + " : " + ss;
+  else return hh + " : " + mm + " : " + ss;
 }
