@@ -166,11 +166,39 @@ newButton.style.padding = "auto auto auto auto";
 newButton.style.height = "75px";
 newButton.style.width = "250px";
 newButton.style.borderRadius = "10px";
+let flag = false;
 
-let flag = true;
-if (flag) {
-  let tryInsertingButton = setInterval(insertButton, 1000);
+async function FIND_MERAKI_URL(url) {
+  console.log(url, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+  const API_URL = "http://localhost:5000/classes";
+  const token = ''
+
+  const data = await fetch(API_URL, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const parsed_data = await data.json();
+  for (let ind = 0; ind < parsed_data.length; ind++) {
+    console.log(parsed_data[ind].class.meet_link,"MEET URL..............");
+    if (parsed_data[ind].class.meet_link === url) {
+      flag = true;
+      break;
+    }
+  }
+  console.log(flag,'FLAG..................');
+  return flag
 }
+
+let meet_url = window.location.href;
+const checked_url = FIND_MERAKI_URL(meet_url);
+checked_url.then((result)=>{
+  if(result){
+    let tryInsertingButton = setInterval(insertButton, 1000);
+  }
+})
 
 function insertButton() {
   try {
