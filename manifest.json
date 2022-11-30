@@ -12,12 +12,12 @@
     }
   ],
   "action": {
-    "default_icon": "./images/logo32.png",
+    "default_icon": "./images/meraki32.png",
     "default_popup": "popup.html"
   },
   "icons": {
-    "16": "./images/logo16.png",
-    "48": "./images/logo48.png",
-    "128": "./images/logo128.png"
+    "16": "./images/meraki16.png",
+    "48": "./images/meraki.png",
+    "128": "./images/meraki128.png"
   }
 }
