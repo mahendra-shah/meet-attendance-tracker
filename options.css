@@ -1,0 +1,85 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 0.5fr 3fr;
+  /* column-gap: 10px; */
+}
+
+.left-menu {
+  height: 100vh;
+  background-color: white;
+}
+.logo {
+  width: auto;
+}
+.logo-fix {
+  width: 10rem;
+  margin: 2rem 3.2rem;
+}
+
+.right-main {
+  height: 100vh;
+  background-color: rgb(247, 247, 247);
+}
+
+/* table section */
+.table-sec {
+  padding: 2.5rem;
+}
+table {
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: white;
+}
+
+#history {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#history td,
+#history th {
+  border: 1px solid #ddd;
+  padding: 18px;
+  height: 20px;
+  font-size: small;
+  font-weight: 500;
+  border: none;
+  /* background-color: rgb(192, 44, 44); */
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+
+#history tr:hover {
+  background-color: #ddd;
+}
+
+#history th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04aa6d;
+  color: white;
+}
+
+.table-container {
+  border-radius: 5px;
+  background-color: white;
+  margin-top: 5rem;
+  box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+}
+
+/* #attendees-count{
+    background-color: red;
+    padding-bottom: 500px;
+}
+.icon-at{
+    background-color: red;
+    padding-bottom: -10px;
+} */
