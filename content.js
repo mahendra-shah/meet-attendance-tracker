@@ -60,6 +60,8 @@ let stop = (STOP = () => {
     meeting_time: startTime,
   };
 
+  localStorage.setItem("meet_data", JSON.stringify(record));
+
   console.log(record, "&&&&&&");
 
   setTimeout(() => {
@@ -127,8 +129,7 @@ function attendanceTracker() {
       goingToStop += 1;
     } else {
       console.log("set interval ka else 1");
-      newButton.innerHTML =
-        toTimeFormat(totalClassDuration)
+      newButton.innerHTML = toTimeFormat(totalClassDuration);
       totalClassDuration += 1;
       goingToStop = 0;
     }
