@@ -66,9 +66,7 @@ let stop = (STOP = () => {
       .then((string) => {
         console.log(`Title of our response :  ${string.title}`);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, 2000);
 });
 
