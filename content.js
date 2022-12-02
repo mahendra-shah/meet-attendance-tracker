@@ -7,21 +7,14 @@ let isAttendanceWorking = false;
 let buttonClickInd = 0;
 let startTime;
 let flag = false;
-// let mannual = 1;
-
-// function guard() {
-//   if (flag) start()
-// }
 
 async function start() {
-  console.log("start se ho rha hai ye");
   startTime = new Date();
   startAttendanceTracker = setInterval(attendanceTracker, 1000);
 }
 
 // to get the meeting name/title
 const getMeetingName = () => {
-  console.log("GET_MEETING_NAME wala functions is working.....");
   const elm = document.querySelector("[data-meeting-title]");
   if (elm && elm.dataset.meetingTitle) {
     return elm.dataset.meetingTitle;
@@ -30,7 +23,6 @@ const getMeetingName = () => {
 };
 
 let stop = (STOP = () => {
-  console.log("STOP wala functions is working.....");
   clearInterval(startAttendanceTracker);
   let meetingCode = window.location.pathname.substring(1);
   let date = new Date();
@@ -40,7 +32,6 @@ let stop = (STOP = () => {
   date = dd + "-" + mm + "-" + yyyy;
   let sortedtstudentsNameSet = [];
   let studentsAttendedDuration = [];
-  //   let studentsJoiningTime = [];
   let mapKeys = studentDetails.keys();
   for (i = 0; i < studentDetails.size; i++) {
     let studentName = mapKeys.next().value;
@@ -50,7 +41,6 @@ let stop = (STOP = () => {
   for (studentName of sortedtstudentsNameSet) {
     let data = studentDetails.get(studentName);
     studentsAttendedDuration.push(data[0].toString());
-    // studentsJoiningTime.push(data[1]);
   }
   var record = {
     attendee_names: JSON.stringify(sortedtstudentsNameSet),
@@ -60,7 +50,7 @@ let stop = (STOP = () => {
     meeting_time: startTime,
   };
 
-  console.log(record, "&&&&&&");
+  console.log(record, "Attendance Sent");
 
   setTimeout(() => {
     const api = "http://localhost:5000/attendance"; // endpoint where this data will go
@@ -74,17 +64,13 @@ let stop = (STOP = () => {
     })
       .then((response) => response.json())
       .then((string) => {
-        // console.log(string);
         console.log(`Title of our response :  ${string.title}`);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, 2000);
 });
 
 function attendanceTracker() {
-  console.log("stt wala hai");
   let currentlyPresentStudents = document.getElementsByClassName("zWGUib");
   if (currentlyPresentStudents.length > 0) {
     studentsNameSet.clear();
@@ -126,14 +112,12 @@ function attendanceTracker() {
     if (studentsNameSet.size - 1 == -1) {
       goingToStop += 1;
     } else {
-      console.log("set interval ka else 1");
       newButton.innerHTML =
         toTimeFormat(totalClassDuration)
       totalClassDuration += 1;
       goingToStop = 0;
     }
     if (goingToStop == 2) {
-      console.log("set interval ka if 1");
       isAttendanceWorking = false;
       newButton.innerHTML = "Track Attendance";
       newButton.style.border = "2px solid #C5221F";
@@ -142,14 +126,12 @@ function attendanceTracker() {
     }
   } else {
     try {
-      console.log("set interval ka try if 1");
       ui_buttons[buttonClickInd % ui_buttons.length].click();
       buttonClickInd += 1;
       goingToStop = 0;
     } catch (error) {
       goingToStop += 1;
       if (goingToStop == 2) {
-        console.log("set interval try if 2");
         isAttendanceWorking = false;
         newButton.innerHTML = "Track Attendance";
         newButton.style.border = "2px solid #C5221F";
@@ -161,7 +143,6 @@ function attendanceTracker() {
 }
 
 async function merakiClassChecker(url) {
-  console.log(url, "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
   const API_URL = "https://dev-api.navgurukul.org/classes";
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjMxNjU1IiwiZW1haWwiOiJtYWhlbmRyYTIxQG5hdmd1cnVrdWwub3JnIiwiaWF0IjoxNjY5Nzg5MjQ4LCJleHAiOjE3MDEzNDY4NDh9.skpbASGKogaOAsngnD1P1tUHx8F0wLGC6uR2YLPXK5g";
@@ -175,15 +156,12 @@ async function merakiClassChecker(url) {
     },
   });
   const parsed_data = await data.json();
-  console.log(parsed_data);
   for (let ind = 0; ind < parsed_data.length; ind++) {
-    console.log(parsed_data[ind].meet_link, "MEET URL..............");
     if (parsed_data[ind].meet_link === url) {
       flag = true;
       break;
     }
   }
-  console.log(flag, "FLAG..................");
   return flag;
 }
 
@@ -191,9 +169,7 @@ let meet_url = window.location.href;
 const checked_url = merakiClassChecker(meet_url);
 checked_url.then((result) => {
   if (result) {
-    // flag = false;
     let tryInsertingButton = setInterval(insertButton, 1000);
-    console.log(result);
   }
 });
 
@@ -227,13 +203,13 @@ function insertButton() {
     }
 
     // send attendance automatically when meet end or end button clicked
-    document.getElementById("newButton").addEventListener("click", function () {
-      if (isAttendanceWorking) {
-        isAttendanceWorking = false;
-        newButton.style.backgroundColor = "#C5221F";
-        stop();
-      }
-    });
+    // document.getElementById("newButton").addEventListener("click", function () {
+    //   if (isAttendanceWorking) {
+    //     isAttendanceWorking = false;
+    //     newButton.style.backgroundColor = "#C5221F";
+    //     stop();
+    //   }
+    // });
     document
       .getElementsByClassName("Gt6sbf QQrMi")
       .addEventListener("click", function () {
