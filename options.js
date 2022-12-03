@@ -2,9 +2,10 @@ const data = chrome.storage.sync.get("Meraki_Attendance_Record", (data) => {
   const records = data.Meraki_Attendance_Record;
   console.log(records, "4567890");
   const tbody = document.querySelector("tbody");
-    for (let record of records) {
-        tbody.innerHTML += `
+  for (let record of records) {
+    tbody.innerHTML += `
           <tr id="row-place">
+              <td>${record.meeting_title}</td>
               <td>${record.meeting_title}</td>
               <td>
                   <img src="images/attendees-icon.svg" class="icon-at" />
@@ -15,12 +16,11 @@ const data = chrome.storage.sync.get("Meraki_Attendance_Record", (data) => {
               <td>${record.meeting_time.split("T")[1].split(".")[0]}</td>
               <td>${record.meet_duration}</td>
               <td></td>
-              <td></td>
-              <td></td>
+              <td><a href="#">View Details</a></td>
+              <td><img src="images/remove.svg" class="icon-at pointer"/></td>
           </tr>
         `;
-
-    }
+  }
 });
 
 function msToTime(duration) {
