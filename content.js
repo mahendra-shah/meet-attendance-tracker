@@ -71,7 +71,6 @@ let stop = (STOP = () => {
     })
       .then((response) => response.json())
       .then((string) => {
-        // console.log(string);
         console.log(`Title of our response :  ${string.title}`);
         window.open(addon.extension.getURL("interface.html"));
         // runtime.openOptionsPage()
@@ -81,29 +80,25 @@ let stop = (STOP = () => {
       });
   }, 2000);
   record.meet_duration = meetingDuration;
-  // const setData = chrome.storage.sync.set({
-  //   Meraki_Attendance_Record: [record],
-  // });
+
   let newRecord;
   const oldRecord = chrome.storage.sync.get(
     "Meraki_Attendance_Record",
     (data) => {
-      console.log(data, "2342343");
       const oldData = data.Meraki_Attendance_Record;
-      if (oldData) {
-        newRecord = oldData.push(record);
-        console.log(newRecord, "56326499999----");
+
+      if (!oldData) {
+        const setData = chrome.storage.sync.set({
+          Meraki_Attendance_Record: [record],
+        });
       } else {
-        newRecord = [record];
+        oldData.push(record);
+        chrome.storage.sync.set({
+          Meraki_Attendance_Record: oldData,
+        });
       }
-      console.log(newRecord, "{{{{{{{{}}}}}}}})");
-      // storing the attendance data to local Storage
-      const setData = chrome.storage.sync.set({
-        Meraki_Attendance_Record: newRecord,
-      });
     }
   );
-  console.log(meetingDuration, "#$%^&*");
 });
 
 function attendanceTracker() {
