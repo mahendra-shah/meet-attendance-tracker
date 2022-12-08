@@ -8,8 +8,8 @@ let goingToStop = 0;
 let isAttendanceWorking = false;
 let buttonClickInd = 0;
 let startTime;
-// let flag = false;
-let flag = true;
+let flag = false;
+// let flag = true;
 let meetingDuration;
 
 async function start() {

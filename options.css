@@ -92,8 +92,8 @@ table {
 
 /* hover section */
 .hoverme {
-  background: #f6f6f6;
-  border-radius: 25px;
+  background: #683737;
+  /* border-radius: 25px; */
   outline: 0;
   cursor: pointer;
   /* top: 40vh; */
@@ -124,4 +124,19 @@ img {
 .pop > img {
   color: #353535;
   font-size: 20px;
+}
+
+/*  popup section */
+.card-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+.card-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
 }

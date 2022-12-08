@@ -9,12 +9,14 @@
       type="image/x-icon"
       href="https://merakilearn.org/favicon.png"
     />
-    <title>NG Attendance Record</title>
+    <title>Meraki Attendance Record</title>
     <script src="options.js"></script>
+    <script src="background.js" defer></script>
     <link rel="stylesheet" href="options.css" />
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
   </head>
   <body>
+    <div class="card-popup"></div>
     <div class="container hoverme">
       <div class=" pop">
         <div class=" text">
@@ -22,7 +24,7 @@
         </div>
       </div>
       <div class="right-main table-sec">
-        <h1>NG Classes History</h1>
+        <h1>Meraki Classes History</h1>
         <div class="table-container">
           <table id="history" class="table-sec">
             <tr>
@@ -37,7 +39,8 @@
               <th></th>
               <th></th>
             </tr>
-            <tr id="row-place">
+
+            <!-- <tr >
               <td>Python List Doubt Class</td>
               <td>mahendra21@navgurukul.org</td>
               <td>
@@ -47,12 +50,24 @@
               <td>02:12:2022</td>
               <td>00:39:09</td>
               <td></td>
-              <td><a href="#">View Details</a></td>
+              <td><a id="row-place" href="#">View Details</a></td>
               <td><img src="images/remove.svg" class="icon-at pointer"/></td>
-            </tr>
+            </tr> -->
+          
           </table>
         </div>
       </div>
     </div>
+    <div class="card-popup" id="popup-handler">
+      <table class="card-container">
+          <tr>
+              <th></th>
+              <th>Names</th>
+              <th>Joined At</th>
+              <th>Time in Call</th>
+          </tr>
+      </table>
+    </div>
+    <!-- <button type="button" class="btn cancel" onclick="closePopup()">Close</button> -->
   </body>
 </html>
