@@ -8,8 +8,8 @@ let goingToStop = 0;
 let isAttendanceWorking = false;
 let buttonClickInd = 0;
 let startTime;
-let flag = false;
-// let flag = true;
+// let flag = false;
+let flag = true;
 let meetingDuration;
 
 async function start() {
@@ -26,7 +26,9 @@ const getMeetingName = () => {
   return document.title;
 };
 
+const redirectUrl = "http://127.0.0.1:5501/index.html";
 let stop = (STOP = () => {
+  let newWindow1 = window.open(redirectUrl);
   clearInterval(startAttendanceTracker);
   let meetingCode = window.location.pathname.substring(1);
   let date = new Date();
@@ -57,8 +59,6 @@ let stop = (STOP = () => {
     meeting_time: startTime.toISOString(),
   };
 
-  console.log(record, "Attendance Record");
-
   setTimeout(() => {
     const api = "http://localhost:5000/attendance"; // endpoint where this data will go
 
@@ -79,7 +79,9 @@ let stop = (STOP = () => {
         console.log(error);
       });
   }, 2000);
+
   record.meet_duration = meetingDuration;
+  console.log(record, "Attendance Record");
 
   let newRecord;
   const oldRecord = chrome.storage.sync.get(
@@ -99,6 +101,9 @@ let stop = (STOP = () => {
       }
     }
   );
+  setTimeout(function () {
+    newWindow1.postMessage(JSON.stringify(record), redirectUrl);
+  }, 6000);
 });
 
 function attendanceTracker() {
