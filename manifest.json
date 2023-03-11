@@ -6,15 +6,9 @@
   "content_scripts": [
     {
       "matches": ["*://meet.google.com/*-*-*"],
-      "js": ["content.js"],
-      "run_at": "document_end",
-      "all_frames": false
+      "js": ["content.js"]
     }
   ],
-  "background": {
-    "script": ["background.js"],
-    "persistence": false
-  },
   "options_page": "options.html",
   "permissions": ["tabs", "storage"],
   "action": {

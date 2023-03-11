@@ -1,5 +1,3 @@
-chrome.runtime.sendMessage({ doIt: "colorExtIcon" });
-
 let studentDetails = new Map();
 let studentsNameSet = new Set();
 let ui_buttons;
@@ -8,8 +6,7 @@ let goingToStop = 0;
 let isAttendanceWorking = false;
 let buttonClickInd = 0;
 let startTime;
-// let flag = false;
-let flag = true;
+let flag = true; // make if false to block non-meraki classes 
 let meetingDuration;
 
 async function start() {
@@ -162,7 +159,8 @@ function attendanceTracker() {
     }
   } else {
     try {
-      ui_buttons[buttonClickInd % ui_buttons.length].click();
+      // ui_buttons[buttonClickInd % ui_buttons.length].click();
+      ui_buttons[1].click();
       buttonClickInd += 1;
       goingToStop = 0;
     } catch (error) {
@@ -249,11 +247,16 @@ function insertButton() {
 }
 
 function toTimeFormat(time) {
-  hh = Math.floor(time / 3600);
-  time = time - hh * 3600;
-  mm = Math.floor(time / 60);
-  time = time - mm * 60;
-  ss = time;
-  if (hh == 0) return mm + " : " + ss;
-  else return hh + " : " + mm + " : " + ss;
+  const SECONDS_IN_HOUR = 3600;
+  const SECONDS_IN_MINUTE = 60;
+  
+  let hours = Math.floor(time / SECONDS_IN_HOUR);
+  let minutes = Math.floor((time % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE);
+  let seconds = time % SECONDS_IN_MINUTE;
+  
+  hours = hours.toString().padStart(2, '0');
+  minutes = minutes.toString().padStart(2, '0');
+  seconds = seconds.toString().padStart(2, '0');
+  
+  return hours === '00' ? `${minutes}:${seconds}` : `${hours}:${minutes}:${seconds}`;
 }
